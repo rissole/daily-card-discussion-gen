@@ -1,2 +1,8 @@
-# daily-card-discussion-gen
-Generates markdown for /r/hearthstone's Daily Card Discussion https://www.reddit.com/r/hearthstone/comments/3d0t15/what_about_having_daily_card_discussion/
+## Check it out [here](http://rissole.github.io/daily-card-discussion-gen/)!
+
+# /r/Hearthstone Daily Card Discussion
+Generates markdown for /r/hearthstone's Daily Card Discussion.
+
+## How does it work?
+
+MAGIC

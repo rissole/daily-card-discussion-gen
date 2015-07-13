@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Daily Card Discussion!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <style>
+        .title {
+            background: #1A1D26 url("https://b.thumbs.redditmedia.com/aIkonMZTbQB9zXwQcJwFYCBuq7ZTfZ7-64boJqR9nZU.jpg");
+            height: 160px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            z-index: 99;
+            left: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+    </div>
+    <form>
+      <div class="header">
+         <p>Let's make today's thread!</p>
+      </div>
+      <div class="description">
+        <p>This tool will generate Reddit markdown for you to use in the next <a href="https://www.reddit.com/r/hearthstone/comments/3d0t15/what_about_having_daily_card_discussion/">Daily Card Discussion</a> thread.</p><p>To generate today's discussion post, just paste the link of yesterday's post below.</p>
+      </div>
+      <div class="input">
+        <input type="text" class="button-textbox" id="link" name="link" placeholder="Link yesterday's discussion thread here">
+        <button type="button" class="button" id="submit" data-toggle="modal" data-target="#resultsModal">DO IT!</button>
+      </div>
+    </form>
+
+    <div class="modal fade" id="resultsModal" tabindex="-1" role="dialog" aria-labelledby="resultsModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="resultsModalTitle">Here's your thread!</h4>
+          </div>
+          <div class="modal-body">
+            <p>Today's card is <strong>Mountain Giant</strong>.</p>
+            <div class="form-group" style="text-align: left">
+                <label for="result-title" style="width: 5%">Title</label>
+                <input type="text" class="form-control" id="result-title" style="margin-left: 1%; display: inline-block; width: 93%; border-radius: 5px;" onclick="this.select();"/>
+            </div>
+            <textarea id="result" onclick="this.select();"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="frontendbullshit.js"></script>
+    <script src="gen.js"></script>
+  </body>
+</html>
