@@ -118,3 +118,15 @@ input:focus, textarea:focus, .form-control:focus{border-color:#B87B2A;outline:0;
 button:focus {
   outline: none;
 }
+
+.title {
+  background: #1A1D26 url("https://b.thumbs.redditmedia.com/aIkonMZTbQB9zXwQcJwFYCBuq7ZTfZ7-64boJqR9nZU.jpg");
+  height: 160px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  z-index: 99;
+  left: 0;
+}
