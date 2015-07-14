@@ -1,0 +1,31 @@
+%intro% 
+  
+   
+_________________________________  
+
+**[%c_name% - %formatted_index%](%c_link%)**  
+**Mana Cost**: %c_cost%  
+**Attack**: %c_attack%  
+**Health**: %c_health%  
+**Type**: %c_type%  
+**Text**: %c_text%  
+**Class**: %c_class%    
+**Tribal**: %c_race%  
+**Rarity**: %c_rarity%  
+**Set**: %c_set%   
+**Flavor**: *%c_flavor%*  
+
+  
+**Crafting Cost**: %c_craft_cost% dust 
+**Golden Crafting Cost**: %c_golden_craft_cost% Dust  
+
+  
+[[Basic]](%c_img_url%) | [[Golden]](%c_golden_img_url%)  
+
+
+_______________________________  
+
+[&lt;--- Previous Thread \[%p_name% - %p_formatted_index%\]](%p_thread_link%)  
+
+  
+*^^PM ^^me ^^any ^^suggestions ^^or ^^advice, ^^thanks.*
