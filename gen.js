@@ -17,9 +17,9 @@ var getCraftCost = function(rarity, isGolden) {
         case 'Rare':
             return isGolden ? 800 : 100;
         case 'Epic':
-            return isGolden ? 400 : 1600;
+            return isGolden ? 1600 : 400;
         case 'Legendary':
-            return isGolden ? 1600 : 3200;
+            return isGolden ? 3200 : 1600;
     }
     return 'Uncraftable';
 };
