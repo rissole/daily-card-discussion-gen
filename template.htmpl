@@ -1,7 +1,7 @@
 %intro% 
   
    
-_________________________________  
+----
 
 **[%c_name% - %formatted_index%](%c_link%)**  
 **Mana Cost**: %c_cost%  
@@ -29,9 +29,12 @@ _________________________________
 [[Basic]](%c_img_url%) | [[Golden]](%c_golden_img_url%)  
 
 
-_______________________________  
+----
 
 [&lt;--- Previous Thread \[%p_name% - %p_formatted_index%\]](%p_thread_link%)  
 
-  
+----
+
+^Thread ^made ^with ^love ^by ^/u/hypersniper's [^thread ^generator](http://rissole.github.io/daily-card-discussion-gen/) 
+
 *^^PM ^^me ^^any ^^suggestions ^^or ^^advice, ^^thanks.*
