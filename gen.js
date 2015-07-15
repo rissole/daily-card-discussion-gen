@@ -10,6 +10,20 @@ $.getJSON('allnames.json').done(function(cards) {
     ALL_CARDS = cards;
 });
 
+var getCraftCost = function(rarity, isGolden) {
+    switch(rarity) {
+        case 'Common':
+            return isGolden ? 400 : 40;
+        case 'Rare':
+            return isGolden ? 800 : 100;
+        case 'Epic':
+            return isGolden ? 400 : 1600;
+        case 'Legendary':
+            return isGolden ? 1600 : 3200;
+    }
+    return 'Uncraftable';
+};
+
 $('#submit').on('click', function() {
     if (ALL_CARDS.length === 0) {
         console.log('Ease up turbo');
@@ -26,10 +40,10 @@ $('#submit').on('click', function() {
     var previousCardNumber = parseInt(previousCardMatch[1], 10);
     var previousName = ALL_CARDS[previousCardNumber - 1];
     var cardNumber = previousCardNumber + 1;
-    var sCardNumber = cardNumber.toString();
     var cardName = ALL_CARDS[cardNumber - 1];
     // are you actually joking me, look at this zero padding code, Guido save me shammahammalamma oh mah gahhhd
-    var formatted_index = '#' + ('000'+sCardNumber).substr(-3);
+    var formattedIndex = '#' + ('000' + cardNumber.toString()).substr(-3);
+    var previousFormattedIndex = '#' + ('000' + previousCardNumber.toString()).substr(-3);
 
     $('#cardname').text(cardName);
     $.when(
@@ -42,35 +56,60 @@ $('#submit').on('click', function() {
                 xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0"); // Enter here your Mashape key
             }
         })
-    ).done(function(template, card) {
+    ).done(function(templateResponse, cardResponse) {
         $('#resultsModal .modal-content').spin(false);
-        card = card[0]; //thanks dumb, but actually really useful, api
-        var formatted_text = card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**');
+        var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
+        var template = templateResponse[0];
+        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**') : 'None';
+        var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName))
 
         // the most lightweight templating engine yet!! hackernews come at me
-        $('#result-title').val('Daily Card Discussion Thread %formatted_index% - %c_name% | %the_date%'
-            .replace('%formatted_index%', formatted_index)
+        $('#result-title').val('Daily Card Discussion Thread %formattedIndex% - %c_name% | %the_date%'
+            .replace('%formattedIndex%', formattedIndex)
             .replace('%c_name%', cardName)
             .replace('%the_date%', new Date().format('dd mmmm, yyyy'))
         );
+
+        // conditionals lol
+        var original_template = template;
+        if (!('attack' in card)) {
+            template = template.replace(/%if_attack%[\s\S]*?%fi_attack%[\r\n]*/g, '');
+        }
+        if (!('health' in card)) {
+            template = template.replace(/%if_health%[\s\S]*?%fi_health%[\r\n]*/g, '');
+        }
+        if (!('durability' in card)) {
+            template = template.replace(/%if_durability%[\s\S]*?%fi_durability%[\r\n]*/g, '');
+        }
+        // if craftable means, rarity is not Free
+        if (!(card.rarity !== 'Free')) {
+            template = template.replace(/%if_craftable%[\s\S]*?%fi_craftable%[\r\n]*/g, '');
+        }
+        template = template.replace(/(?:%if_.*?%)|(?:%fi_.*?%[\r\n]*)/g, '');
+
         $('#result').val(template
-            .replace('%intro%', INTRO)
-            .replace('%formatted_index%', formatted_index)
-            .replace('%c_name%', cardName)
-            .replace('%c_cost%', card.cost)
-            .replace('%c_attack%', card.attack)
-            .replace('%c_health%', card.health)
-            .replace('%c_type%', card.type)
-            .replace('%c_text%', formatted_text)
-            .replace('%c_class%', card.playerClass ? card.playerClass : 'Neutral')
-            .replace('%c_race%', card.race ? card.race : 'None')
-            .replace('%c_rarity%', card.rarity)
-            .replace('%c_set%', card.set)
-            .replace('%c_flavor%', card.flavor)
-            .replace('%c_img_url%', card.img)
-            .replace('%c_golden_img_url%', card.imgGold)
-            .replace('%c_golden_img_url%', card.imgGold)
-            .replace('%p_name%', previousName)
+            .replace(/%intro%/g, INTRO)
+            .replace(/%formatted_index%/g, formattedIndex)
+            .replace(/%c_link%/g, gamepediaLink)
+            .replace(/%c_name%/g, cardName)
+            .replace(/%c_cost%/g, card.cost)
+            .replace(/%c_attack%/g, card.attack)
+            .replace(/%c_health%/g, card.health)
+            .replace(/%c_durability%/g, card.durability)
+            .replace(/%c_type%/g, card.type)
+            .replace(/%c_text%/g, formattedText)
+            .replace(/%c_class%/g, 'playerClass' in card ? card.playerClass : 'Neutral')
+            .replace(/%c_race%/g, 'race' in card ? card.race : 'None')
+            .replace(/%c_rarity%/g, card.rarity)
+            .replace(/%c_set%/g, card.cardSet)
+            .replace(/%c_flavor%/g, card.flavor)
+            .replace(/%c_img_url%/g, card.img)
+            .replace(/%c_golden_img_url%/g, card.imgGold)
+            .replace(/%p_name%/g, previousName)
+            .replace(/%p_formatted_index%/g, previousFormattedIndex)
+            .replace(/%p_thread_link%/g, previousUrl)
+            .replace(/%c_craft_cost%/g, getCraftCost(card.rarity, false))
+            .replace(/%c_golden_craft_cost%/g, getCraftCost(card.rarity, true))
         );
     });
 });

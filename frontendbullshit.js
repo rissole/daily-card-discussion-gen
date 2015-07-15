@@ -9,4 +9,6 @@ $('#resultsModal').on('show.bs.modal', function() {
     $('#resultsModal .modal-content').spin();
 });
 
-$('#link').val('https://www.reddit.com/r/hearthstone/comments/3d5q28/daily_card_discussion_thread_002_malygos_july/');
+$('#resultsModal').on('hide.bs.modal', function() {
+    $('#resultsModal input, #resultsModal textarea').val('');
+});
