@@ -49,7 +49,7 @@ $('#submit').on('click', function() {
     $.when(
         $.get('template.htmpl'),
         $.ajax({
-            url: 'https://omgvamp-hearthstone-v1.p.mashape.com/cards/'+encodeURIComponent(cardName),
+            url: 'https://omgvamp-hearthstone-v1.p.mashape.com/cards/'+encodeURIComponent(cardName)+'?collectible=1',
             type: 'GET',
             dataType: 'json',
             beforeSend: function(xhr) {
