@@ -53,14 +53,14 @@ $('#submit').on('click', function() {
             type: 'GET',
             dataType: 'json',
             beforeSend: function(xhr) {
-                xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0"); // Enter here your Mashape key
+                xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0");
             }
         })
     ).done(function(templateResponse, cardResponse) {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
-        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**') : 'None';
+        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '') : 'None';
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName))
 
         // the most lightweight templating engine yet!! hackernews come at me
