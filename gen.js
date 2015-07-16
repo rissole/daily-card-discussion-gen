@@ -85,7 +85,7 @@ $('#submit').on('click', function() {
         if (!(card.rarity !== 'Free')) {
             template = template.replace(/%if_craftable%[\s\S]*?%fi_craftable%[\r\n]*/g, '');
         }
-        template = template.replace(/(?:%if_.*?%)|(?:%fi_.*?%[\r\n]*)/g, '');
+        template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
 
         $('#result').val(template
             .replace(/%intro%/g, INTRO)
