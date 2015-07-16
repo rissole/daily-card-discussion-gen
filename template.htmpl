@@ -26,7 +26,7 @@
 
 %if_craftable%
 **Crafting Cost**: %c_craft_cost% dust  
-**Golden Crafting Cost**: %c_golden_craft_cost% Dust   
+**Golden Crafting Cost**: %c_golden_craft_cost% dust   
 %fi_craftable%
 
   
