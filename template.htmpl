@@ -5,24 +5,28 @@
 
 **[%c_name% - %formatted_index%](%c_link%)**  
 **Mana Cost**: %c_cost%  
-%if_attack%**Attack**: %c_attack%
+%if_attack%
+**Attack**: %c_attack%  
 %fi_attack%
-%if_health%**Health**: %c_health%
+%if_health%
+**Health**: %c_health%  
 %fi_health%
-%if_durability%**Durability**: %c_durability%
+%if_durability%
+**Durability**: %c_durability%  
 %fi_durability%
 **Type**: %c_type%  
 **Text**: %c_text%  
 **Class**: %c_class%    
-%if_health%**Tribal**: %c_race%
+%if_health%
+**Tribal**: %c_race%  
 %fi_health%
 **Rarity**: %c_rarity%  
 **Set**: %c_set%   
 **Flavor**: *%c_flavor%*  
 
 %if_craftable%
-**Crafting Cost**: %c_craft_cost% dust 
-**Golden Crafting Cost**: %c_golden_craft_cost% Dust  
+**Crafting Cost**: %c_craft_cost% dust  
+**Golden Crafting Cost**: %c_golden_craft_cost% Dust   
 %fi_craftable%
 
   
