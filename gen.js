@@ -92,7 +92,7 @@ $('#submit').on('click', function() {
             .replace(/%formatted_index%/g, formattedIndex)
             .replace(/%c_link%/g, gamepediaLink)
             .replace(/%c_name%/g, cardName)
-            .replace(/%c_cost%/g, 'cost' in card ? card.cost : '0')
+            .replace(/%c_cost%/g, card.cost)
             .replace(/%c_attack%/g, card.attack)
             .replace(/%c_health%/g, card.health)
             .replace(/%c_durability%/g, card.durability)

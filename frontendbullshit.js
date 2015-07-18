@@ -12,3 +12,12 @@ $('#resultsModal').on('show.bs.modal', function() {
 $('#resultsModal').on('hide.bs.modal', function() {
     $('#resultsModal input, #resultsModal textarea').val('');
 });
+
+$('#posttoreddit').click(function() {
+    window.open(
+      'http://reddit.com/r/hearthstone/submit?selfText=true&title=%s&text=%s'
+        .replace('%s', encodeURIComponent($('#result-title').val()))
+        .replace('%s', encodeURIComponent($('#result').val())),
+      '_blank'
+    );
+});
