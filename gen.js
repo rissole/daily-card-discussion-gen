@@ -71,6 +71,7 @@ $('#submit').on('click', function() {
         );
 
         // conditionals lol
+        // removes the "if" blocks if they don't exist
         var original_template = template;
         if (!('attack' in card)) {
             template = template.replace(/%if_attack%[\s\S]*?%fi_attack%[\r\n]*/g, '');
@@ -84,6 +85,9 @@ $('#submit').on('click', function() {
         // if craftable means, rarity is not Free
         if (!(card.rarity !== 'Free')) {
             template = template.replace(/%if_craftable%[\s\S]*?%fi_craftable%[\r\n]*/g, '');
+        }
+        if (!('howToGet' in card)) {
+            template = template.replace(/%if_howtoget%[\s\S]*?%fi_howtoget%[\r\n]*/g, '');
         }
         template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
 
@@ -110,6 +114,8 @@ $('#submit').on('click', function() {
             .replace(/%p_thread_link%/g, previousUrl)
             .replace(/%c_craft_cost%/g, getCraftCost(card.rarity, false))
             .replace(/%c_golden_craft_cost%/g, getCraftCost(card.rarity, true))
+            .replace(/%c_how_to_get%/g, card.howToGet)
+            .replace(/%c_how_to_get_gold%/g, card.howToGetGold)
         );
     });
 });
