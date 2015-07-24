@@ -23,6 +23,10 @@
 **Rarity**: %c_rarity%  
 **Set**: %c_set%   
 **Flavor**: *%c_flavor%*  
+%if_howtoget%
+**How to get**: %c_how_to_get%  
+**How to get gold**: %c_how_to_get_gold%  
+%fi_howtoget%
 
 %if_craftable%
 **Crafting Cost**: %c_craft_cost% dust  
