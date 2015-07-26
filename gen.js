@@ -61,6 +61,7 @@ $('#submit').on('click', function() {
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
         var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '') : 'None';
+        var formattedFlavor = card.flavor.replace(/(?:<i>)|(?:<\/i>)/g, '');
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName))
 
         // the most lightweight templating engine yet!! hackernews come at me
@@ -106,7 +107,7 @@ $('#submit').on('click', function() {
             .replace(/%c_race%/g, 'race' in card ? card.race : 'None')
             .replace(/%c_rarity%/g, card.rarity)
             .replace(/%c_set%/g, card.cardSet)
-            .replace(/%c_flavor%/g, card.flavor)
+            .replace(/%c_flavor%/g, formattedFlavor)
             .replace(/%c_img_url%/g, card.img)
             .replace(/%c_golden_img_url%/g, card.imgGold)
             .replace(/%p_name%/g, previousName)
