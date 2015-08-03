@@ -68,7 +68,7 @@ $('#submit').on('click', function() {
         $('#result-title').val('Daily Card Discussion Thread %formattedIndex% - %c_name% | %the_date%'
             .replace('%formattedIndex%', formattedIndex)
             .replace('%c_name%', cardName)
-            .replace('%the_date%', new Date().format('mmmm ddS, yyyy'))
+            .replace('%the_date%', new Date().format('mmmm dS, yyyy'))
         );
 
         // conditionals lol
