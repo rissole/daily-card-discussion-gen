@@ -1,4 +1,4 @@
-// thanks for downloading 100kb of jquery for this one method ayy lamo
+// thanks for downloading 100kb of jquery for this one file ayy lamo
 $('#link').on('paste', function(e) {
     setTimeout(function() {
         $('#submit').click();
@@ -18,6 +18,13 @@ $('#posttoreddit').click(function() {
       'http://reddit.com/r/hearthstone/submit?selfText=true&title=%s&text=%s'
         .replace('%s', encodeURIComponent($('#result-title').val()))
         .replace('%s', encodeURIComponent($('#result').val())),
+      '_blank'
+    );
+});
+
+$('#metathread').click(function() {
+    window.open(
+      'https://www.reddit.com/r/hearthstone/comments/3g2gz3/list_of_all_daily_card_discussions/',
       '_blank'
     );
 });
