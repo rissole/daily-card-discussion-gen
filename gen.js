@@ -24,6 +24,27 @@ var getCraftCost = function(rarity, isGolden) {
     return 'Uncraftable';
 };
 
+var isCraftable = function(card, isGolden) {
+    if (card.cardSet === 'Basic' || card.cardSet === 'Reward') {
+        return false;
+    }
+    if (!isGolden && 'howToGet' in card && card.howToGet.indexOf('Can be crafted') === -1) {
+        return false;
+    }
+    if (isGolden && 'howToGetGold' in card && card.howToGetGold.indexOf('Can be crafted') === -1) {
+        return false;
+    }
+    return true;
+}
+
+// in my dumb template, you do %if_condition% and %fi_condition%, on their own lines, around your condition.
+var removeTemplateConditionalIfFalse = function(template, conditionName, conditionValue) {
+    if (conditionValue) {
+        return template
+    }
+    return template.replace(new RegExp('%if_'+conditionName+'%[\\s\\S]*?%fi_'+conditionName+'%[\\r\\n]*', 'g'), '');
+}
+
 $('#submit').on('click', function() {
     if (ALL_CARDS.length === 0) {
         console.log('Ease up turbo');
@@ -72,24 +93,15 @@ $('#submit').on('click', function() {
         );
 
         // conditionals lol
-        // removes the "if" blocks if they don't exist
+        // removes the "if" blocks if they aren't needed
         var original_template = template;
-        if (!('attack' in card)) {
-            template = template.replace(/%if_attack%[\s\S]*?%fi_attack%[\r\n]*/g, '');
-        }
-        if (!('health' in card)) {
-            template = template.replace(/%if_health%[\s\S]*?%fi_health%[\r\n]*/g, '');
-        }
-        if (!('durability' in card)) {
-            template = template.replace(/%if_durability%[\s\S]*?%fi_durability%[\r\n]*/g, '');
-        }
-        // if craftable means, rarity is not Free
-        if (!(card.rarity !== 'Free')) {
-            template = template.replace(/%if_craftable%[\s\S]*?%fi_craftable%[\r\n]*/g, '');
-        }
-        if (!('howToGet' in card)) {
-            template = template.replace(/%if_howtoget%[\s\S]*?%fi_howtoget%[\r\n]*/g, '');
-        }
+        template = removeTemplateConditionalIfFalse(template, 'attack', 'attack' in card);
+        template = removeTemplateConditionalIfFalse(template, 'health', 'health' in card);
+        template = removeTemplateConditionalIfFalse(template, 'durability', 'durability' in card);
+        template = removeTemplateConditionalIfFalse(template, 'craftable_normal', isCraftable(card, false));
+        template = removeTemplateConditionalIfFalse(template, 'craftable_gold', isCraftable(card, true));
+        template = removeTemplateConditionalIfFalse(template, 'howtoget', 'howToGet' in card);
+        template = removeTemplateConditionalIfFalse(template, 'howtogetgold', 'howToGetGold' in card);
         template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
 
         $('#result').val(template

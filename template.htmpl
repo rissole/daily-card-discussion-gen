@@ -25,13 +25,17 @@
 **Flavor**: *%c_flavor%*  
 %if_howtoget%
 **How to get**: %c_how_to_get%  
-**How to get gold**: %c_how_to_get_gold%  
 %fi_howtoget%
+%if_howtogetgold%
+**How to get gold**: %c_how_to_get_gold%  
+%fi_howtogetgold%
 
-%if_craftable%
+%if_craftable_normal%
 **Crafting Cost**: %c_craft_cost% dust  
+%fi_craftable_normal%
+%if_craftable_gold%
 **Golden Crafting Cost**: %c_golden_craft_cost% dust   
-%fi_craftable%
+%fi_craftable_gold%
 
   
 [[Basic]](%c_img_url%) | [[Golden]](%c_golden_img_url%)  
@@ -40,6 +44,8 @@
 ----
 
 [&lt;--- Previous Thread \[%p_name% - %p_formatted_index%\]](%p_thread_link%)  
+
+[\[List of all Daily Card Discussions\]](https://www.reddit.com/r/hearthstone/comments/3g2gz3/list_of_all_daily_card_discussions/)  
 
 ----
 
