@@ -53,12 +53,16 @@ $('#submit').on('click', function() {
     // work out what yesterday's card was
     var previousUrl = $('#link').val();
     var previousCardMatch = /daily_card_discussion_thread_(\d+)_/.exec(previousUrl);
+    var previousNumberOverride = 0;
     if (!previousCardMatch || previousCardMatch.length != 2) {
         // jeez man the instructions are pretty clear! why can't i recognise this url!
+        if (previousUrl.indexOf('/3k6n5x/') > -1) {
+            previousNumberOverride = 59;
+        }
         return false;
     }
     // vars boyz //
-    var previousCardNumber = parseInt(previousCardMatch[1], 10);
+    var previousCardNumber = previousNumberOverride || parseInt(previousCardMatch[1], 10);
     var previousName = ALL_CARDS[previousCardNumber - 1];
     var cardNumber = previousCardNumber + 1;
     var cardName = ALL_CARDS[cardNumber - 1];
