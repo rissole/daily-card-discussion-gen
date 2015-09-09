@@ -59,7 +59,9 @@ $('#submit').on('click', function() {
         if (previousUrl.indexOf('/3k6n5x/') > -1) {
             previousNumberOverride = 59;
         }
-        return false;
+        else {
+            return false;
+        }
     }
     // vars boyz //
     var previousCardNumber = previousNumberOverride || parseInt(previousCardMatch[1], 10);
