@@ -1,9 +1,3 @@
-var INTRO = '**Introduction**\n\n'
-            + 'Hello and welcome to the "Daily Card Discussion Thread", because people upvoted this suggestion a lot, I thought I could come a long and manage it and if people like it I will continue to post daily.\n\n'
-            + 'Cards selected will be random cards in the game until we literally go through every card *(Neutrals, class, spells, secrets, creatures, tokens)*\n\n'
-            + 'At the bottom of each thread you can navigate to the previous card to continue its discussion there.\n\n'
-            + 'Because this is a community idea, please leave any suggestions down below to improve this thread.';
-
 // should be fine we all have fast internet around here
 var ALL_CARDS = [];
 $.getJSON('allnames.json').done(function(cards) {
@@ -111,7 +105,6 @@ $('#submit').on('click', function() {
         template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
 
         $('#result').val(template
-            .replace(/%intro%/g, INTRO)
             .replace(/%formatted_index%/g, formattedIndex)
             .replace(/%c_link%/g, gamepediaLink)
             .replace(/%c_name%/g, cardName)
