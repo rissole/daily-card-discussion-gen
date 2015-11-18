@@ -22,6 +22,10 @@ var isCraftable = function(card, isGolden) {
     if (card.cardSet === 'Basic' || card.cardSet === 'Reward') {
         return false;
     }
+    // hack override due to inconsistent API. ben brode should hire some better json programmers
+    if (card.cardSet === 'The League of Explorers' && !isGolden) {
+        return false;
+    }
     if (!isGolden && 'howToGet' in card && card.howToGet.indexOf('Can be crafted') === -1) {
         return false;
     }
