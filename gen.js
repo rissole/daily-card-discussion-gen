@@ -81,12 +81,16 @@ $('#submit').on('click', function() {
                 xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0");
             }
         }),
-        $.get('hh_ids.json')
+        $.ajax({
+            url: 'hh_ids.json',
+            type: 'GET',
+            dataType: 'json'
+        })
     ).done(function(templateResponse, cardResponse, hearthheadIDMapResponse) {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
-        var hearthheadIDMap = JSON.parse(hearthheadIDMapResponse[0]);
+        var hearthheadIDMap = hearthheadIDMapResponse[0];
         var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '') : 'None';
         var formattedFlavor = card.flavor.replace(/(?:<i>)|(?:<\/i>)/g, '');
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName))
