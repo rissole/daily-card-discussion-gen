@@ -80,18 +80,14 @@ $('#submit').on('click', function() {
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0");
             }
-        }),
-        $.get('hh_ids.json')
-    ).done(function(templateResponse, cardResponse, hearthheadIDMapResponse) {
+        })
+    ).done(function(templateResponse, cardResponse) {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
-        var hearthheadIDMap = JSON.parse(hearthheadIDMapResponse[0]);
         var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '') : 'None';
         var formattedFlavor = card.flavor.replace(/(?:<i>)|(?:<\/i>)/g, '');
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName))
-        var hearthheadID = hearthheadIDMap[card.cardId];
-        var hearthheadLink = typeof(hearthheadID) !== 'undefined' ? 'http://www.hearthhead.com/card=' + hearthheadID + '#comments' : 'http://www.hearthhead.com';
 
         // the most lightweight templating engine yet!! hackernews come at me
         $('#result-title').val('Daily Card Discussion Thread %formattedIndex% - %c_name% | %the_date%'
@@ -136,7 +132,6 @@ $('#submit').on('click', function() {
             .replace(/%c_golden_craft_cost%/g, getCraftCost(card.rarity, true))
             .replace(/%c_how_to_get%/g, card.howToGet)
             .replace(/%c_how_to_get_gold%/g, card.howToGetGold)
-            .replace(/%hearthhead_link%/g, hearthheadLink)
         );
     });
 });
