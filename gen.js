@@ -63,7 +63,13 @@ $('#submit').on('click', function() {
     }
     // vars boyz //
     var previousCardNumber = previousNumberOverride || parseInt(previousCardMatch[1], 10);
-    var previousName = ALL_CARDS[previousCardNumber - 1];
+    var previousNameOverride = null;
+    if (previousCardNumber === 271) {
+        // shifter zerus ayy lmao nice gag mang
+        // RIP Lance Carrier
+        previousNameOverride = 'Shifter Zerus';
+    }
+    var previousName = previousNameOverride || ALL_CARDS[previousCardNumber - 1];
     var cardNumber = previousCardNumber + 1;
     var cardName = ALL_CARDS[cardNumber - 1];
     // are you actually joking me, look at this zero padding code, Guido save me shammahammalamma oh mah gahhhd
