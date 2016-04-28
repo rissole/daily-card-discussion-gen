@@ -69,9 +69,19 @@ $('#submit').on('click', function() {
         // RIP Lance Carrier
         previousNameOverride = 'Shifter Zerus';
     }
+    // for gag purposes I'm leaving the previous go to shifter zerus for lancer carrier,
+    // because that's what shifter zerus replaced originally when it came out early.
+    //if (previousCardNumber === 349) {
+    //    previousNameOverride = 'Lance Carrier';
+    //}
     var previousName = previousNameOverride || ALL_CARDS[previousCardNumber - 1];
     var cardNumber = previousCardNumber + 1;
     var cardName = ALL_CARDS[cardNumber - 1];
+    
+    // more hardcoded shifter zerus shenanigans
+    if (cardName == 'Shifter Zerus' && cardNumber > 271) {
+        cardName = 'Lance Carrier';
+    }
     // are you actually joking me, look at this zero padding code, Guido save me shammahammalamma oh mah gahhhd
     var formattedIndex = '#' + ('000' + cardNumber.toString()).substr(-3);
     var previousFormattedIndex = '#' + ('000' + previousCardNumber.toString()).substr(-3);
