@@ -11,6 +11,5 @@ MAGIC
 
 1. Download the new `allcards.json` from Mashape, make sure to add collectible=1.
 1. `python add_new_cards.py <latest daily discussion thread number>`
-1. `python hh_id_gen.py <path to /Hearthstone/DBF/CARD.xml>`
 
 Enjoy the Bad Code
