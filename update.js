@@ -53,12 +53,12 @@ function getLastDiscussionIndex() {
     return prompto;
 }
 
-function flattenAllCardsResponse() {
+function flattenAllCardsResponse(allCardsResponse) {
     var newAllNames = [];
     $.each(allCardsResponse, function(set, setCards) {
-        newAllNames.concat(
+        Array.prototype.push.apply(newAllNames,
             setCards.filter(function(card) {
-                return card.cardId.indexOf('HERO') !== -1;
+                return card.cardId.indexOf('HERO') === -1;
             }).map(function(card) {
                 return card.name;
             })
@@ -79,6 +79,7 @@ function shuffle(a) {
         a[i - 1] = a[j];
         a[j] = x;
     }
+    return a;
 }
 
 DCDUpdater = {
@@ -103,25 +104,27 @@ DCDUpdater = {
         DCDUpdater.retrieveVersionAndCardData().then(function(versionAndCardData) {
             retrieveAllCards().then(function(allCardsResponse) {
                 // remove the old names from the new list.
-                $('.update-container').prepend('<span class="glyphicon glyphicon-flag"></span>').find('.tiny-button-spinner').remove();
-
                 var lastDiscussionIndex = getLastDiscussionIndex();
                 if (lastDiscussionIndex === null) {
+                    $('.update-container > button').prepend('<span class="glyphicon glyphicon-flag"></span>').find('.tiny-button-spinner').remove();
                     return;
                 }
 
                 var oldAllNames = versionAndCardData.val().allnames.slice(0, lastDiscussionIndex);
                 var newAllNames = flattenAllCardsResponse(allCardsResponse).filter(function(cardName) {
-                    return oldAllNames.indexOf(cardName) !== -1;
+                    return oldAllNames.indexOf(cardName) === -1;
                 });
 
                 newAllNames = oldAllNames.concat(shuffle(newAllNames));
 
-                DCDUpdater.saveNewNames(newAllNames);
+                DCDUpdater.saveNewNames(newAllNames, function() {
+                    $('.update-container > button').prepend('<span class="glyphicon glyphicon-flag"></span>').find('.tiny-button-spinner').remove();
+                });
             });
         });
     },
-    saveNewNames: function(allNames) {
-        
+    saveNewNames: function(allNames, cb) {
+        console.info(allNames);
+        cb && cb();
     }
 };

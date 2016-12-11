@@ -108,7 +108,7 @@ $('#submit').on('click', function() {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
-        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '') : 'None';
+        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '').replace(/\\n/, ' ') : 'None';
         var formattedFlavor = card.flavor.replace(/(?:<i>)|(?:<\/i>)/g, '');
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName));
         var hearthheadName = cardName.replace(/[^a-zA-Z ]/g, '').replace(/ /, '-').toLowerCase();
