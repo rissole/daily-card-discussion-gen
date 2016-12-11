@@ -28,3 +28,10 @@ $('#metathread').click(function() {
       '_blank'
     );
 });
+
+$('.update-container .tiny-button-spinner').spin('tiny');
+
+function setSubmitEnabled(usable) {
+  $('.input input').prop('disabled', !usable);
+  return $('.input button').prop('disabled', !usable);
+}

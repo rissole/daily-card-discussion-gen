@@ -3,17 +3,21 @@ body {
   background: rgb(219, 202, 185);
   font-family: 'Lato', sans-serif;
   color: #333;
-  text-align: center;
   margin: 0;
 }
 
 
 form {
   width: 570px;
-  margin: 17% auto;
+  margin: 0 auto;
   background: #fff;
   border-radius: 5px;
   padding: 60px;
+  text-align: center;
+}
+
+#resultsModal {
+  text-align: center;
 }
 
 .header {
@@ -125,8 +129,15 @@ button:focus {
   width: 100%;
   margin: 0;
   padding: 0;
-  position: absolute;
-  top: 0;
-  z-index: 99;
-  left: 0;
+}
+
+.update-container {
+  width: 100%;
+  padding: 20px;
+}
+
+.tiny-button-spinner {
+  padding-left: 14px;
+  margin-right: 5px;
+  position: relative;
 }

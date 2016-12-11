@@ -1,10 +1,15 @@
 // should be fine we all have fast internet around here
 // not fine now that we're firebased
-$('#submit').prop('disabled', true).find('span').css('color', 'transparent').spin('small', '#000');
 var ALL_CARDS = [];
- DCDUpdater.retrieveAllNames().then(function(cards) {
+
+setSubmitEnabled(false).find('span').css('color', 'transparent').spin('small', '#000');
+ DCDUpdater.retrieveVersionAndCardData().then(function(versionAndCards) {
+    versionAndCards = versionAndCards.val();
+    var cards = versionAndCards.allnames;
     ALL_CARDS = cards;
-    $('#submit').prop('disabled', false).find('span').css('color', '#000').spin(false);
+    setSubmitEnabled(true).find('span').css('color', '#000').spin(false);
+
+    DCDUpdater.updateUpdateRequiredUI(versionAndCards.version);
 }, function(error) {
     $('#submit').find('span').css('color', '#000').text('Error, try reloading');
     console.error(error);
