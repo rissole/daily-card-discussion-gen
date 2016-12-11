@@ -1,7 +1,13 @@
 // should be fine we all have fast internet around here
+// not fine now that we're firebased
+$('#submit').prop('disabled', true).find('span').css('color', 'transparent').spin('small', '#000');
 var ALL_CARDS = [];
-$.getJSON('allnames.json').done(function(cards) {
+ DCDUpdater.retrieveAllNames().then(function(cards) {
     ALL_CARDS = cards;
+    $('#submit').prop('disabled', false).find('span').css('color', '#000').spin(false);
+}, function(error) {
+    $('#submit').find('span').css('color', '#000').text('Error, try reloading');
+    console.error(error);
 });
 
 var getCraftCost = function(rarity, isGolden) {
@@ -44,10 +50,6 @@ var removeTemplateConditionalIfFalse = function(template, conditionName, conditi
 }
 
 $('#submit').on('click', function() {
-    if (ALL_CARDS.length === 0) {
-        console.log('Ease up turbo');
-        return false;
-    }
     // work out what yesterday's card was
     var previousUrl = $('#link').val();
     var previousCardMatch = /daily_card_discussion_thread_(\d+)_/.exec(previousUrl);
