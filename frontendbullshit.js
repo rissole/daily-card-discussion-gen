@@ -24,7 +24,7 @@ $('#posttoreddit').click(function() {
 
 $('#metathread').click(function() {
     window.open(
-      'https://www.reddit.com/r/hearthstone/comments/41ee18/list_of_all_daily_card_discussion_threads_v2/',
+      'https://redd.it/5l7k00',
       '_blank'
     );
 });
