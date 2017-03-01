@@ -61,8 +61,11 @@ function getLastDiscussionIndex() {
     while (prompto !== null && isNaN(parseInt(prompto, 10))) {
         prompto /*ma boy*/ = prompt('[IMPORTANT, DON\'T GET THIS WRONG] What is the number of the latest Daily Card Discussion?');
     }
-    var confirmo = prompto !== null && confirm('Are you sure? Getting it wrong means /u/hypersniper will have to fix things manually.');
-
+    var confirmo = confirm('Are you sure? Getting it wrong means /u/hypersniper will have to fix things manually.');
+    if (!confirmo) {
+        return null;
+    }
+    
     return prompto;
 }
 
