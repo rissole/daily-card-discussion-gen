@@ -33,23 +33,36 @@ function retrieveAllCards() {
 }
 
 function renderUpdateRequiredButton(localVersion, apiVersion) {
-    var html = '<button type="button" class="btn btn-danger" title="Update required. Current patch %localVersion%"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> New patch %apiVersion% – Click here to Update</button>'
+    var html = '<button type="button" class="btn btn-danger" title="Update required. Current patch %localVersion%" data-api-version="%apiVersion%"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> New patch %apiVersion% – Click here to Update</button>'
         .replace(/%localVersion%/g, localVersion)
         .replace(/%apiVersion%/g, apiVersion);
     return $(html);
 }
 
-function renderUpToDateButton(version) {
-    var html = '<button type="button" class="btn btn-success" title="Up to date with current patch"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> %version%</button>'
-        .replace(/%version%/g, version);
+function getApiVersionFromUpdateRequiredButton() {
+    return $('button[data-api-version]').attr('data-api-version');
+}
+
+function renderUpToDateButton(version, numberOfJustUpdatedCards) {
+    var justUpdatedMessage = '';
+    if (numberOfJustUpdatedCards === 0) {
+        justUpdatedMessage = '| Success. No new cards this time though, must\'ve been just balance changes.';
+    } else if (numberOfJustUpdatedCards) {
+        justUpdatedMessage = '| Success. Wow, new expansion? We added ' + numberOfJustUpdatedCards + ' new cards!';
+    }
+    var html = '<button type="button" class="btn btn-success" title="Up to date with current patch"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> %version% %justUpdatedMessage%</button>'
+        .replace(/%version%/g, version)
+        .replace(/%justUpdatedMessage%/g, justUpdatedMessage);
     return $(html);
 }
 
 function getLastDiscussionIndex() {
     var prompto = '';
     while (prompto !== null && isNaN(parseInt(prompto, 10))) {
-        prompto /*ma boy*/ = prompt('What is the number of the latest Daily Card Discussion?');
+        prompto /*ma boy*/ = prompt('[IMPORTANT, DON\'T GET THIS WRONG] What is the number of the latest Daily Card Discussion?');
     }
+    var confirmo = prompto !== null && confirm('Are you sure? Getting it wrong means /u/hypersniper will have to fix things manually.');
+
     return prompto;
 }
 
@@ -87,13 +100,16 @@ DCDUpdater = {
     retrieveVersionAndCardData: function() {
         return database.ref('/').once('value');
     },
-    updateUpdateRequiredUI: function(localVersion) {
+    updateUpdateRequiredUI: function(localVersion, numberOfJustUpdatedCards) {
         retrieveApiVersion().then(function(versionResponse) {
             var apiVersion = versionResponse.patch;
-            var $button = renderUpToDateButton(localVersion);
+            var $button = renderUpToDateButton(localVersion, numberOfJustUpdatedCards);
             if (localVersion !== apiVersion) {
                 $button = renderUpdateRequiredButton(localVersion, apiVersion);
-                $button.click(DCDUpdater.updateCardData);
+                $button.click(function() {
+                    $button.prop('disabled', true);
+                    DCDUpdater.updateCardData();
+                });
             }
             $('.update-container').html($button);
         });
@@ -103,10 +119,17 @@ DCDUpdater = {
         $('.tiny-button-spinner').spin('tiny');
         DCDUpdater.retrieveVersionAndCardData().then(function(versionAndCardData) {
             retrieveAllCards().then(function(allCardsResponse) {
+                var newVersion = $('button[data-api-version]').attr('data-api-version');
+                if (!newVersion) {
+                    alert('Update failed: Missing new version. Refresh and try again.');
+                    return;
+                }
+
                 // remove the old names from the new list.
                 var lastDiscussionIndex = getLastDiscussionIndex();
                 if (lastDiscussionIndex === null) {
                     $('.update-container > button').prepend('<span class="glyphicon glyphicon-flag"></span>').find('.tiny-button-spinner').remove();
+                    $('.update-container > button').prop('disabled', false);
                     return;
                 }
 
@@ -117,14 +140,30 @@ DCDUpdater = {
 
                 newAllNames = oldAllNames.concat(shuffle(newAllNames));
 
-                DCDUpdater.saveNewNames(newAllNames, function() {
+                DCDUpdater.saveNewNames(versionAndCardData.val(), newVersion, newAllNames, function() {
                     $('.update-container > button').prepend('<span class="glyphicon glyphicon-flag"></span>').find('.tiny-button-spinner').remove();
                 });
             });
         });
     },
-    saveNewNames: function(allNames, cb) {
-        console.info(allNames);
-        cb && cb();
+    saveNewNames: function(oldVersionAndCardData, version, allNames, cb) {
+        database.ref('/').set({
+            backup: oldVersionAndCardData,
+            lastUpdated: (new Date()).toUTCString(),
+            allnames: allNames,
+            version: version
+        }, function(error) {
+            if (error) {
+                alert('Update failed: ' + error + ". Refresh and try again.");
+            } else {
+                var oldNames = oldVersionAndCardData.allnames;
+                var newNames = allNames;
+                var numberOfNewCardsAdded = newNames.filter(function(name) {
+                    return oldNames.indexOf(name) === -1;
+                }).length;
+                DCDUpdater.updateUpdateRequiredUI(version, numberOfNewCardsAdded);
+            }
+            cb && cb();
+        });
     }
 };
