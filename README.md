@@ -9,7 +9,6 @@ MAGIC
 
 ## WHEN A NEW EXPANSION HITS
 
-1. Download the new `allcards.json` from Mashape, make sure to add collectible=1.
-1. `python add_new_cards.py <latest daily discussion thread number>`
+Run the auto-updater! See the wiki for details.
 
 Enjoy the Bad Code
