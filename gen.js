@@ -60,7 +60,7 @@ var formatCardText = function(cardText) {
         .replace(/<\/b>/g, '**')
         .replace(/\$/g, '')
         .replace(/#/g, '')
-        .replace(/\n/g, ' ')
+        .replace(/\\n/g, ' ')
         .replace(/_/g, ' ')
         .replace(/\[x\]/g, '');
 }
