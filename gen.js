@@ -49,9 +49,20 @@ var isCraftable = function(card, isGolden) {
 // in my dumb template, you do %if_condition% and %fi_condition%, on their own lines, around your condition.
 var removeTemplateConditionalIfFalse = function(template, conditionName, conditionValue) {
     if (conditionValue) {
-        return template
+        return template;
     }
     return template.replace(new RegExp('%if_'+conditionName+'%[\\s\\S]*?%fi_'+conditionName+'%[\\r\\n]*', 'g'), '');
+}
+
+var formatCardText = function(cardText) {
+    return cardText
+        .replace(/<b>/g, '**')
+        .replace(/<\/b>/g, '**')
+        .replace(/\$/g, '')
+        .replace(/#/g, '')
+        .replace(/\n/g, ' ')
+        .replace(/_/g, ' ')
+        .replace(/\[x\]/g, '');
 }
 
 $('#submit').on('click', function() {
@@ -108,7 +119,7 @@ $('#submit').on('click', function() {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
-        var formattedText = card.text ? card.text.replace(/<b>/g, '**').replace(/<\/b>/g, '**').replace(/\$/g, '').replace(/#/g, '').replace(/\\n/, ' ') : 'None';
+        var formattedText = card.text ? formatCardText(card.text) : 'None';
         var formattedFlavor = card.flavor.replace(/(?:<i>)|(?:<\/i>)/g, '');
         var gamepediaLink = 'http://hearthstone.gamepedia.com/index.php?search=%c_name%&title=Special:Search&go=Go'.replace('%c_name%', encodeURIComponent(cardName));
         var hearthheadName = cardName.replace(/[^a-zA-Z ]/g, '').replace(/ /, '-').toLowerCase();
