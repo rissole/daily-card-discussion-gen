@@ -37,7 +37,23 @@
                 <label for="result-title" style="width: 5%">Title</label>
                 <input type="text" class="form-control" id="result-title" style="margin-left: 1%; display: inline-block; width: 93%; border-radius: 5px;" onclick="this.select();"/>
             </div>
+            <div class="radio">
+              <label class="radio-inline">
+                <input checked type="radio" name="output-type" id="radio-output-classic" value="classic" />
+                Classic markdown
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="output-type" id="radio-output-alpha" value="alpha" />
+                 Reddit alpha output
+              </label>
+            </div>
             <textarea id="result" onclick="this.select();"></textarea>
+            <div id="result-alpha-container" style="display: none">
+              <div>Copy and paste the contents below into reddit:</div>
+              <hr/>
+              <div id="result-alpha" style="text-align: left">
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

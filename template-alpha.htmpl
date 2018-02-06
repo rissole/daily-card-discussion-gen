@@ -1,0 +1,58 @@
+<p>
+<strong>Introduction</strong>
+</p>
+<p>Hello and welcome to another Daily Card Discussion Thread.</p>
+
+<p>The way this works is simple: Every day a random collectible card is selected for discussion. Post your thoughts on the card in the comments below. Discussion is not limited to competitive viability - feel free to talk about the art, sounds, animations or anything else you like.</p>
+
+<p>As a reminder, at the bottom of each thread you can navigate to the previous discussion thread, as well as find a link to a list of all the discussion threads so far.</p>
+  
+<p>----</p>
+
+<strong><a href="%c_link%">%c_name% - %formatted_index%</a></strong>  
+<p><strong>Mana Cost</strong>: %c_cost%  </p>
+%if_attack%
+<p><strong>Attack</strong>: %c_attack%  </p>
+%fi_attack%
+%if_health%
+<p><strong>Health</strong>: %c_health%  </p>
+%fi_health%
+%if_durability%
+<p><strong>Durability</strong>: %c_durability%  </p>
+%fi_durability%
+<p><strong>Type</strong>: %c_type%  </p>
+<p><strong>Text</strong>: %c_text%  </p>
+<p><strong>Class</strong>: %c_class%    </p>
+%if_health%
+<p><strong>Tribal</strong>: %c_race%  </p>
+%fi_health%
+<p><strong>Rarity</strong>: %c_rarity%  </p>
+<p><strong>Set</strong>: %c_set%   </p>
+<p><strong>Flavor</strong>: <i>%c_flavor%</i>  </p>
+%if_howtoget%
+<p><strong>How to get</strong>: %c_how_to_get%  </p>
+%fi_howtoget%
+%if_howtogetgold%
+<p><strong>How to get gold</strong>: %c_how_to_get_gold%  </p>
+%fi_howtogetgold%
+
+%if_craftable_normal%
+<p><strong>Crafting Cost</strong>: %c_craft_cost% dust  </p>
+%fi_craftable_normal%
+%if_craftable_gold%
+<p><strong>Golden Crafting Cost</strong>: %c_golden_craft_cost% dust   </p>
+%fi_craftable_gold%
+
+  
+<p><a href="%c_img_url%">[Basic]</a> | <a href="%c_golden_img_url%">[Golden]</a> | <a href="%hearthhead_link%">via Hearthhead</a></p>
+
+
+<p>----</p>
+
+<p><a href="%p_thread_link">&lt;--- Previous Thread [%p_name% - %p_formatted_index%]</a></p>
+
+<p><a href="https://redd.it/5l7k00">[List of all Daily Card Discussions]</a></p>
+
+<p>----</p>
+
+<p><small>Thread made with love by /u/hypersniper's thread generator.</small></p>

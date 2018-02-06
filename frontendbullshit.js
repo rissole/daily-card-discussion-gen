@@ -14,10 +14,14 @@ $('#resultsModal').on('hide.bs.modal', function() {
 });
 
 $('#posttoreddit').click(function() {
+    var postText = $('#result').val();
+    if ($("#radio-output-alpha").is(":checked")) {
+      postText = "(Copy and paste from generator Alpha view)";
+    }
     window.open(
       'http://reddit.com/r/hearthstone/submit?selfText=true&title=%s&text=%s'
         .replace('%s', encodeURIComponent($('#result-title').val()))
-        .replace('%s', encodeURIComponent($('#result').val())),
+        .replace('%s', encodeURIComponent(postText)),
       '_blank'
     );
 });
@@ -35,3 +39,13 @@ function setSubmitEnabled(usable) {
   $('.input input').prop('disabled', !usable);
   return $('.input button').prop('disabled', !usable);
 }
+
+$('#radio-output-classic').click(function() {
+  $('#result').show();
+  $('#result-alpha-container').hide();
+});
+
+$('#radio-output-alpha').click(function() {
+  $('#result').hide();
+  $('#result-alpha-container').show();
+});

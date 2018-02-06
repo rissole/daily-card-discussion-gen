@@ -65,6 +65,56 @@ var formatCardText = function(cardText) {
         .replace(/\[x\]/g, '');
 }
 
+var formatCardTextAlpha = function(cardText) {
+    return cardText
+        .replace(/\$/g, '')
+        .replace(/#/g, '')
+        .replace(/\\n/g, ' ')
+        .replace(/_/g, ' ')
+        .replace(/\[x\]/g, '');
+}
+
+var formatTemplate = 
+    function(template, card, cardName, formattedIndex, formattedText, formattedFlavor,
+        previousName, previousFormattedIndex, previousUrl, gamepediaLink, hearthheadLink) {
+    // conditionals lol
+    // removes the "if" blocks if they aren't needed
+    template = removeTemplateConditionalIfFalse(template, 'attack', 'attack' in card);
+    template = removeTemplateConditionalIfFalse(template, 'health', 'health' in card);
+    template = removeTemplateConditionalIfFalse(template, 'durability', 'durability' in card);
+    template = removeTemplateConditionalIfFalse(template, 'craftable_normal', isCraftable(card, false));
+    template = removeTemplateConditionalIfFalse(template, 'craftable_gold', isCraftable(card, true));
+    template = removeTemplateConditionalIfFalse(template, 'howtoget', 'howToGet' in card);
+    template = removeTemplateConditionalIfFalse(template, 'howtogetgold', 'howToGetGold' in card);
+    template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
+
+    return template
+        .replace(/%formatted_index%/g, formattedIndex)
+        .replace(/%c_link%/g, gamepediaLink)
+        .replace(/%c_name%/g, cardName)
+        .replace(/%c_cost%/g, card.cost)
+        .replace(/%c_attack%/g, card.attack)
+        .replace(/%c_health%/g, card.health)
+        .replace(/%c_durability%/g, card.durability)
+        .replace(/%c_type%/g, card.type)
+        .replace(/%c_text%/g, formattedText)
+        .replace(/%c_class%/g, 'playerClass' in card ? card.playerClass : 'Neutral')
+        .replace(/%c_race%/g, 'race' in card ? card.race : 'None')
+        .replace(/%c_rarity%/g, card.rarity)
+        .replace(/%c_set%/g, card.cardSet)
+        .replace(/%c_flavor%/g, formattedFlavor)
+        .replace(/%c_img_url%/g, card.img)
+        .replace(/%c_golden_img_url%/g, card.imgGold)
+        .replace(/%p_name%/g, previousName)
+        .replace(/%p_formatted_index%/g, previousFormattedIndex)
+        .replace(/%p_thread_link%/g, previousUrl)
+        .replace(/%c_craft_cost%/g, getCraftCost(card.rarity, false))
+        .replace(/%c_golden_craft_cost%/g, getCraftCost(card.rarity, true))
+        .replace(/%c_how_to_get%/g, card.howToGet)
+        .replace(/%c_how_to_get_gold%/g, card.howToGetGold)
+        .replace(/%hearthhead_link%/g, hearthheadLink);
+}
+
 $('#submit').on('click', function() {
     // work out what yesterday's card was
     var previousUrl = $('#link').val();
@@ -114,8 +164,9 @@ $('#submit').on('click', function() {
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-Mashape-Authorization", "QBcxRS2k9ymshXiWiJ0GlfwTJd33p1LAgUcjsnU6IKY8olZvp0");
             }
-        })
-    ).done(function(templateResponse, cardResponse) {
+        }),
+        $.get('template-alpha.htmpl')
+    ).done(function(templateResponse, cardResponse, templateAlphaResponse) {
         $('#resultsModal .modal-content').spin(false);
         var card = cardResponse[0][0]; //thanks dumb, but actually really useful, api. Solid NPS 9
         var template = templateResponse[0];
@@ -132,43 +183,23 @@ $('#submit').on('click', function() {
             .replace('%the_date%', new Date().format('mmmm dS, yyyy'))
         );
 
-        // conditionals lol
-        // removes the "if" blocks if they aren't needed
-        var original_template = template;
-        template = removeTemplateConditionalIfFalse(template, 'attack', 'attack' in card);
-        template = removeTemplateConditionalIfFalse(template, 'health', 'health' in card);
-        template = removeTemplateConditionalIfFalse(template, 'durability', 'durability' in card);
-        template = removeTemplateConditionalIfFalse(template, 'craftable_normal', isCraftable(card, false));
-        template = removeTemplateConditionalIfFalse(template, 'craftable_gold', isCraftable(card, true));
-        template = removeTemplateConditionalIfFalse(template, 'howtoget', 'howToGet' in card);
-        template = removeTemplateConditionalIfFalse(template, 'howtogetgold', 'howToGetGold' in card);
-        template = template.replace(/(?:%if_.*?%[\r\n]*)|(?:%fi_.*?%[\r\n]*)/g, '');
-
-        $('#result').val(template
-            .replace(/%formatted_index%/g, formattedIndex)
-            .replace(/%c_link%/g, gamepediaLink)
-            .replace(/%c_name%/g, cardName)
-            .replace(/%c_cost%/g, card.cost)
-            .replace(/%c_attack%/g, card.attack)
-            .replace(/%c_health%/g, card.health)
-            .replace(/%c_durability%/g, card.durability)
-            .replace(/%c_type%/g, card.type)
-            .replace(/%c_text%/g, formattedText)
-            .replace(/%c_class%/g, 'playerClass' in card ? card.playerClass : 'Neutral')
-            .replace(/%c_race%/g, 'race' in card ? card.race : 'None')
-            .replace(/%c_rarity%/g, card.rarity)
-            .replace(/%c_set%/g, card.cardSet)
-            .replace(/%c_flavor%/g, formattedFlavor)
-            .replace(/%c_img_url%/g, card.img)
-            .replace(/%c_golden_img_url%/g, card.imgGold)
-            .replace(/%p_name%/g, previousName)
-            .replace(/%p_formatted_index%/g, previousFormattedIndex)
-            .replace(/%p_thread_link%/g, previousUrl)
-            .replace(/%c_craft_cost%/g, getCraftCost(card.rarity, false))
-            .replace(/%c_golden_craft_cost%/g, getCraftCost(card.rarity, true))
-            .replace(/%c_how_to_get%/g, card.howToGet)
-            .replace(/%c_how_to_get_gold%/g, card.howToGetGold)
-            .replace(/%hearthhead_link%/g, hearthheadLink)
+        $('#result').val(
+            formatTemplate(
+                template, card, cardName, formattedIndex, formattedText, formattedFlavor,
+                previousName, previousFormattedIndex, previousUrl, gamepediaLink, hearthheadLink
+            )
         );
+
+        //alpha layout stuff
+        var templateAlpha = templateAlphaResponse[0];
+        var formattedTextAlpha = card.text ? formatCardTextAlpha(card.text) : 'None';
+
+        $('#result-alpha').html(
+            formatTemplate(
+                templateAlpha, card, cardName, formattedIndex, formattedTextAlpha, formattedFlavor,
+                previousName, previousFormattedIndex, previousUrl, gamepediaLink, hearthheadLink
+            )
+        );
+
     });
 });
