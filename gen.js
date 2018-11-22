@@ -9,7 +9,7 @@ setSubmitEnabled(false).find('span').css('color', 'transparent').spin('small', '
     ALL_CARDS = cards;
     setSubmitEnabled(true).find('span').css('color', '#000').spin(false);
 
-    DCDUpdater.updateUpdateRequiredUI(versionAndCards.version);
+    //DCDUpdater.updateUpdateRequiredUI(versionAndCards.version);
 }, function(error) {
     $('#submit').find('span').css('color', '#000').text('Error, try reloading');
     console.error(error);
@@ -115,8 +115,70 @@ var formatTemplate =
         .replace(/%hearthhead_link%/g, hearthheadLink);
 }
 
+function editDistance(s1, s2) {
+  s1 = s1.toLowerCase();
+  s2 = s2.toLowerCase();
+
+  var costs = new Array();
+  for (var i = 0; i <= s1.length; i++) {
+    var lastValue = i;
+    for (var j = 0; j <= s2.length; j++) {
+      if (i == 0)
+        costs[j] = j;
+      else {
+        if (j > 0) {
+          var newValue = costs[j - 1];
+          if (s1.charAt(i - 1) != s2.charAt(j - 1))
+            newValue = Math.min(Math.min(newValue, lastValue),
+              costs[j]) + 1;
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0)
+      costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+}
+function similarity(s1, s2) {
+  var longer = s1;
+  var shorter = s2;
+  if (s1.length < s2.length) {
+    longer = s2;
+    shorter = s1;
+  }
+  var longerLength = longer.length;
+  if (longerLength == 0) {
+    return 1.0;
+  }
+  return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
+
+var findCardNameInAllNames = function(cardName) {
+    if (ALL_CARDS.includes(cardName)) {
+        return cardName;
+    } else {
+        var maxSimilarity = 0;
+        var similarName = null;
+        ALL_CARDS.forEach(function(name) {
+            var s = similarity(cardName, name.toLowerCase());
+            if (s > maxSimilarity) {
+                similarName = name;
+                maxSimilarity = s;
+            }
+        });
+        if (maxSimilarity > 0.5) {
+            return similarName;
+        } else {
+            return '';
+        }
+    }
+}
+
 $('#submit').on('click', function() {
     // work out what yesterday's card was
+    $('#name-error').html('');
     var previousUrl = $('#link').val();
     var previousCardMatch = /daily_card_discussion_thread_(\d+)_/.exec(previousUrl);
     var previousNumberOverride = 0;
@@ -144,7 +206,17 @@ $('#submit').on('click', function() {
     //}
     var previousName = previousNameOverride || ALL_CARDS[previousCardNumber - 1];
     var cardNumber = previousCardNumber + 1;
-    var cardName = ALL_CARDS[cardNumber - 1];
+    var cardName = $('#in-cardname').val().toLowerCase();
+    var similarName = findCardNameInAllNames(cardName);
+    if (cardName !== similarName.toLowerCase()) {
+        if (!similarName) {
+            $('#name-error').html("We couldn't find a card with that name.");
+        } else {
+            $('#name-error').html("We couldn't find a card with that name. Did you mean <strong>"+similarName+"</strong>?");
+        }
+        return false;
+    }
+    cardName = similarName;
     
     // more hardcoded shifter zerus shenanigans
     if (cardName == 'Shifter Zerus' && cardNumber > 271) {

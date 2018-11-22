@@ -8,15 +8,22 @@
   </head>
   <body>
     <div class="title"></div>
-    <div class="update-container">
+    <!--<div class="update-container">
       <button type="button" class="btn btn-success"><span class="tiny-button-spinner"></span>Checking for updates</button>
-    </div>
+    </div>-->
     <form>
       <div class="header">
          <p>Let's make today's thread!</p>
       </div>
       <div class="description">
-        <p>This tool will generate Reddit markdown for you to use in the next <a href="https://www.reddit.com/r/hearthstone/comments/3d0t15/what_about_having_daily_card_discussion/">Daily Card Discussion</a> thread.</p><p>To generate today's discussion post, just paste the link of yesterday's thread below.</p>
+        <p>This tool will generate Reddit markdown for you to use in the next <a href="https://www.reddit.com/r/hearthstone/comments/3d0t15/what_about_having_daily_card_discussion/">Daily Card Discussion</a> thread.</p><p>To generate today's discussion post, type the card's exact name and paste the link of yesterday's thread below. Then hit <strong>DO IT!</strong> to get started.</p>
+      </div>
+      <div class="input" style="display: block">
+        <div style="width: 100%">
+          <input type="text" id="in-cardname" name="cardname" placeholder="Enter exact card name here
+          ">
+        </div>
+        <div id="name-error"></div>
       </div>
       <div class="input">
         <input type="text" class="button-textbox" id="link" name="link" placeholder="Link yesterday's discussion thread here">

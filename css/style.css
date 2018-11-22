@@ -64,13 +64,16 @@ form > .input:not(:last-child) {
   border: none;
 }
 
+input[type='text'] {
+  height: 44px;
+}
+
 .button-textbox {
   height: 44px;
   border-right: none;
 }
-
   
-#link {
+#link, #in-cardname {
   width: 75%;
   background: #FDFCFB;
   font-family: inherit;
@@ -80,6 +83,16 @@ form > .input:not(:last-child) {
   border-radius: 5px 0 0 5px;
 }
 
+#in-cardname {
+  width: 100%;
+}
+
+#name-error {
+  width: 100%;
+  text-align: left;
+  margin-left: 5px;
+  color: #E53935;
+}
 
 textarea {
   width: 100%;
