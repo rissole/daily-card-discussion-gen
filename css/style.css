@@ -14,6 +14,7 @@ form {
   border-radius: 5px;
   padding: 60px;
   text-align: center;
+  margin-top: 60px;
 }
 
 #resultsModal {
@@ -137,7 +138,7 @@ button:focus {
 }
 
 .title {
-  background: #1A1D26 url("https://b.thumbs.redditmedia.com/v0BO5DNr-QKNb7LC2CVnva5NidL5M5FX9n7j2oyU-MI.png");
+  background: #1A1D26 url("//b.thumbs.redditmedia.com/hjeqsG4UdUoCZapXpYtjIWxVlIFXwGc1Z5wG2xjv8bU.jpg");
   height: 160px;
   width: 100%;
   margin: 0;
